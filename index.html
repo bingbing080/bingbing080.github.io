@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温水煮青蛙大老板</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #1a102e; /* 深紫底色调 */
+            color: #f8f9fa;
+            font-family: "PingFang SC", "Microsoft YaHei", "Ma Shan Zheng", cursive;
+            height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(194, 134, 255, 0.25) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(124, 77, 255, 0.25) 0%, transparent 30%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* 星光背景（紫色星光） */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #d8bfff; /* 浅紫星光 */
+            border-radius: 50%;
+            animation: twinkle 2.5s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* 标题容器（包含主标题和副标题） */
+        .title-group {
+            position: fixed;
+            top: 70px; /* 上移标题，避免被浏览器栏遮挡 */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 1;
+            width: 95%; /* 限制宽度，避免溢出 */
+        }
+        
+        /* 主标题样式（紫色渐变） */
+        .page-title {
+            font-size: 28px; /* 缩小主标题字号，适配手机 */
+            text-shadow: 0 0 20px rgba(194, 134, 255, 0.9);
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #c286ff, #8a4dff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+            white-space: nowrap; /* 主标题强制不换行 */
+        }
+        
+        /* 副标题样式（浅紫色，强制单行显示） */
+        .sub-title {
+            font-size: 16px; /* 缩小副标题字号，确保单行 */
+            color: #d8bfff;
+            text-shadow: 0 0 15px rgba(194, 134, 255, 0.7);
+            letter-spacing: 1px;
+            font-weight: 500;
+            white-space: nowrap; /* 强制副标题不换行 */
+            overflow: hidden;
+            text-overflow: ellipsis; /* 极端情况显示省略号（实际会完整显示） */
+        }
+        
+        /* 字幕容器 */
+        .subtitle-container {
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            z-index: 1;
+            position: relative;
+            margin-top: 30px; /* 缩小与标题的间距 */
+        }
+        
+        .serial-number {
+            font-size: 32px;
+            color: #a76fff; /* 中紫序号 */
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-shadow: 0 0 12px rgba(167, 111, 255, 0.9);
+            opacity: 0;
+            animation: fadeInOut 2.5s ease forwards;
+        }
+        
+        .merit-text {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding: 30px 25px;
+            border-radius: 16px;
+            background: rgba(60, 30, 120, 0.35); /* 深紫半透明背景 */
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(194, 134, 255, 0.3); /* 浅紫边框 */
+            opacity: 0;
+            animation: fadeInOut 2.5s ease forwards;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            -webkit-font-smoothing: subpixel-antialiased;
+            text-shadow: 0 3px 15px rgba(30, 15, 60, 0.5);
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+            20% { opacity: 1; transform: translateY(0) scale(1); }
+            80% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        }
+        
+        /* 进度指示器（紫色渐变） */
+        .progress-container {
+            width: 85%;
+            max-width: 650px;
+            height: 8px;
+            background: rgba(194, 134, 255, 0.15); /* 浅紫底 */
+            border-radius: 4px;
+            margin-top: 35px;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #c286ff, #a76fff, #8a4dff, #6b2eff); /* 紫色渐变进度条 */
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* 响应式调整（针对手机端） */
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 22px; /* 进一步缩小主标题 */
+            }
+            .sub-title {
+                font-size: 14px; /* 进一步缩小副标题 */
+            }
+            .merit-text {
+                font-size: 30px;
+                padding: 20px 15px;
+            }
+            .serial-number {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 标题组（主标题+副标题） -->
+    <div class="title-group">
+        <h1 class="page-title">🌟 大老板的101个优点 🌟</h1>
+        <h2 class="sub-title">祝温水煮青蛙大老板永远不死一胎生18个</h2>
+    </div>
+    
+    <!-- 星光背景 -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- 字幕容器 -->
+    <div class="subtitle-container">
+        <div class="serial-number" id="serialNumber">001</div>
+        <div class="merit-text" id="meritText">温柔体贴</div>
+    </div>
+    
+    <!-- 进度指示器 -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    
+    <script>
+        // 优点列表
+        const merits = [
+            "温柔体贴", "善解人意", "聪明伶俐", "乐观开朗", "勤奋努力",
+            "诚实守信", "有责任心", "富有创造力", "有幽默感", "坚韧不拔",
+            "乐于助人", "宽容大度", "有耐心", "细心周到", "独立自主",
+            "有主见", "善于沟通", "团队合作", "领导才能", "学习能力强",
+            "适应能力强", "有同情心", "懂得感恩", "有礼貌", "尊重他人",
+            "爱护环境", "热爱生活", "有追求", "有梦想", "勇于尝试",
+            "不怕失败", "坚持不懈", "有毅力", "自律", "守时",
+            "整洁干净", "有品位", "懂得欣赏", "有艺术细胞", "音乐天赋",
+            "运动天赋", "烹饪技能", "组织能力", "解决问题能力", "决策能力",
+            "分析能力", "逻辑思维", "记忆力好", "专注力强", "观察力敏锐",
+            "想象力丰富", "好奇心强", "求知欲强", "热爱阅读", "写作能力",
+            "表达能力", "演讲能力", "倾听能力", "共情能力", "情绪稳定",
+            "心理强大", "抗压能力强", "应变能力", "危机处理", "资源整合",
+            "时间管理", "财务管理", "规划能力", "执行力强", "效率高",
+            "注重细节", "追求完美", "有标准", "有原则", "有底线",
+            "正义感", "公平公正", "无私奉献", "乐于分享", "慷慨大方",
+            "谦虚谨慎", "不骄不躁", "知错能改", "不断进步", "自我反省",
+            "身心健康", "积极向上", "充满活力", "精力充沛", "气质优雅",
+            "仪表堂堂", "笑容甜美", "声音悦耳", "举止得体", "风度翩翩",
+            "魅力四射", "人见人爱", "花见花开", "独一无二", "无可替代",
+            "完美无瑕"
+        ];
+        
+        // 紫色系颜色数组
+        const colors = [
+            '#c286ff', '#a76fff', '#8a4dff', '#6b2eff', '#520fff',
+            '#d8bfff', '#b98fff', '#9f6fff', '#854fff', '#6a2fff'
+        ];
+        
+        // DOM元素
+        const serialNumberElement = document.getElementById('serialNumber');
+        const meritTextElement = document.getElementById('meritText');
+        const progressBarElement = document.getElementById('progressBar');
+        
+        // 状态变量
+        let currentIndex = 0;
+        let intervalId = null;
+        const displayDuration = 300;
+        
+        // 生成随机星光
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 120;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const size = Math.random() * 4 + 1;
+                const delay = Math.random() * 6;
+                
+                star.style.left = `${left}%`;
+                star.style.top = `${top}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // 显示优点
+        function showMerit(index) {
+            serialNumberElement.textContent = (index + 1).toString().padStart(3, '0');
+            meritTextElement.textContent = merits[index];
+            
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            meritTextElement.style.color = randomColor;
+            
+            const progress = ((index + 1) / merits.length) * 100;
+            progressBarElement.style.width = `${progress}%`;
+            
+            serialNumberElement.style.animation = 'none';
+            meritTextElement.style.animation = 'none';
+            void serialNumberElement.offsetWidth;
+            void meritTextElement.offsetWidth;
+            
+            serialNumberElement.style.animation = 'fadeInOut 2.5s ease forwards';
+            meritTextElement.style.animation = 'fadeInOut 2.5s ease forwards';
+        }
+        
+        // 播放下一个优点
+        function nextMerit() {
+            currentIndex = (currentIndex + 1) % merits.length;
+            showMerit(currentIndex);
+        }
+        
+        // 开始自动播放
+        function startAutoPlay() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(nextMerit, displayDuration);
+        }
+        
+        // 初始化
+        function init() {
+            createStars();
+            showMerit(currentIndex);
+            startAutoPlay();
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
